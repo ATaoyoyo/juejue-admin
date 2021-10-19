@@ -1,6 +1,11 @@
 export default [
   {
+    path: '/',
+    redirect: '/dashboard',
+  },
+  {
     path: '/login',
+    layout: false,
     component: '@/pages/login',
   },
   {
@@ -10,9 +15,22 @@ export default [
     component: '@/pages/dashboard',
   },
   {
-    path: '/products',
+    path: '/user',
     name: '用户管理',
-    icon: 'UserOutlined',
-    component: '@/pages/manage',
+    icon: 'SlidersOutlined',
+    routes: [
+      {
+        path: '/user/backUser',
+        name: '后台用户',
+        icon: 'TeamOutlined',
+        component: '@/pages/manage/backUser',
+      },
+      {
+        path: '/user/customer',
+        name: '账单用户',
+        icon: 'SolutionOutlined',
+        component: '@/pages/manage/customer',
+      },
+    ],
   },
 ];
