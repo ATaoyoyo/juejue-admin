@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { message } from 'antd';
 
+axios.defaults.baseURL = '/api';
+// process.env === 'development' ? '/api' : 'http://162.14.73.199:7001/api';
+
 const request = axios.create({
-  baseUrl: '/api',
   timeout: 10000,
   withCredentials: true,
   headers: {
@@ -14,8 +16,6 @@ const request = axios.create({
 
 request.interceptors.request.use(
   (config) => {
-    console.log(config);
-
     config.headers.Authorization = `${localStorage.getItem('TOKEN') || null}`;
 
     if (config.url !== '/backUser/login' && !config.headers.Authorization) {
@@ -35,8 +35,6 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   (res) => {
-    console.log('res', res);
-
     if (typeof res.data !== 'object') {
       message.error('服务端异常');
       return Promise.reject(res);

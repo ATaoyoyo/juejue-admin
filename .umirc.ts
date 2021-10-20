@@ -1,4 +1,5 @@
 import { defineConfig } from 'umi';
+import path from 'path';
 
 import routes from './src/routes';
 
@@ -23,9 +24,9 @@ export default defineConfig({
   },
   proxy: {
     '/api': {
-      target: 'http://localhost:7001/api/',
+      target: 'http://127.0.0.1:7002/api',
       changeOrigin: true,
-      rewrite: (path: string) => path.replace(/^\/api/, ''),
+      pathRewrite: { '^/api': '' },
     },
   },
 });
