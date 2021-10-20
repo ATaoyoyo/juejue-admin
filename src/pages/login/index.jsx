@@ -1,22 +1,29 @@
 import React from 'react';
-import { Card, Form, Input, Button } from 'antd';
+import { useHistory } from 'umi';
+import { Card, Form, Input, Button, message } from 'antd';
 import {
   UserOutlined,
   LockOutlined,
   BorderVerticleOutlined,
 } from '@ant-design/icons';
 
-import request from '../../api';
-
 import './style.less';
 import { login } from '@/api/user';
 
 function Login() {
+  const history = useHistory();
+
   const onFinish = async (values) => {
-    console.log(values);
     const { username, password } = values;
-    const data = await login(username, password);
+    const { code, data, message: msg } = await login(username, password);
     console.log(data);
+    if (code === 200) {
+      message.success('登陆成功！');
+      localStorage.setItem('TOKEN', data);
+      history.push('/dashboard');
+    } else {
+      message.error(msg);
+    }
   };
 
   return (
