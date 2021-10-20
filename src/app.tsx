@@ -3,6 +3,8 @@ import { Button } from 'antd';
 
 import RightHeader from '@/components/RightHeader';
 
+import './style/index.less';
+
 export function getInitialState() {
   return {
     name: 'Serati Ma',
