@@ -17,3 +17,12 @@ export const login = (username, password) => {
 export const queryBackUser = () => {
   return request.get('/backUser/queryUser');
 };
+
+/**
+ * 更改用户状态
+ * @param {string} id 用户id
+ * @returns
+ */
+export const stopOrStartUser = (id, used) => {
+  return request.put('/backUser/change', { id, used });
+};

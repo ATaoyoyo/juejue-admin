@@ -9,14 +9,14 @@ const request = axios.create({
   withCredentials: true,
   headers: {
     'X-Request-With': 'XMLHttpRequest',
-    Authorization: `${localStorage.getItem('TOKEN') || null}`,
+    Authorization: `${localStorage.getItem('TOKEN') || ''}`,
     post: { 'Content-Type': 'application/json' },
   },
 });
 
 request.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = `${localStorage.getItem('TOKEN') || null}`;
+    config.headers.Authorization = `${localStorage.getItem('TOKEN') || ''}`;
 
     if (config.url !== '/backUser/login' && !config.headers.Authorization) {
       message.error('用户未登录！');
@@ -38,6 +38,10 @@ request.interceptors.response.use(
     if (typeof res.data !== 'object') {
       message.error('服务端异常');
       return Promise.reject(res);
+    } else if (res.data.code === 401) {
+      message.error('请先登陆！');
+      location.href = '/login';
+      return;
     }
 
     return res.data;
