@@ -14,8 +14,8 @@ export const login = (username, password) => {
  * 查询后台用户
  * @returns
  */
-export const queryBackUser = () => {
-  return request.get('/backUser/queryUser');
+export const queryBackUser = (params) => {
+  return request.get('/backUser/queryUser', { params: params });
 };
 
 /**
@@ -25,4 +25,22 @@ export const queryBackUser = () => {
  */
 export const stopOrStartUser = (id, used) => {
   return request.put('/backUser/change', { id, used });
+};
+
+/**
+ * 创建后台用户
+ * @param {object} params 用户参数
+ * @returns
+ */
+export const registerUser = (params) => {
+  return request.post('/backUser/register', params);
+};
+
+/**
+ * 更新用户
+ * @param {object} params 用户信息
+ * @returns
+ */
+export const updateUser = (params) => {
+  return request.post('/backUser/update', params);
 };
