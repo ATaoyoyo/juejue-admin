@@ -22,14 +22,17 @@ export default [
       {
         path: '/user/backUser',
         name: '后台用户',
-        icon: 'TeamOutlined',
         component: '@/pages/manage/backUser',
       },
       {
         path: '/user/customer',
         name: '账单用户',
-        icon: 'SolutionOutlined',
         component: '@/pages/manage/customer',
+      },
+      {
+        path: '/user/register',
+        name: '创建账户',
+        component: '@/pages/manage/register',
       },
     ],
   },
