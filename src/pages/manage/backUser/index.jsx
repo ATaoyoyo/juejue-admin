@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Tag, Button, Space } from 'antd';
+import { Table, Tag, Button } from 'antd';
 import {
   EditOutlined,
   StopOutlined,
   CheckCircleOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons';
 
-import { queryBackUser } from '@/api/user';
-import { formatUserData } from './helper';
 import SearchForm from './components/SearchForm';
 import EditForm from './components/EditForm';
+import { formatUserData } from './helper';
 
-import { stopOrStartUser } from '../../../api/user';
+import { queryBackUser, stopOrStartUser, updateUser } from '../../../api/user';
 import { messageTip } from '../../../utils';
 
 import './style.less';
@@ -19,6 +19,7 @@ import './style.less';
 function BackUser() {
   const [table, setTable] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [detail, setDetail] = useState({});
 
   const columns = [
     {
@@ -26,8 +27,16 @@ function BackUser() {
       dataIndex: 'id',
     },
     {
-      title: '用户名',
+      title: '账号',
       dataIndex: 'username',
+    },
+    {
+      title: '用户名',
+      dataIndex: 'nickname',
+    },
+    {
+      title: '手机号',
+      dataIndex: 'phone',
     },
     {
       title: '最近登陆',
@@ -58,12 +67,17 @@ function BackUser() {
             编辑
           </Button>
           <Button
-            danger={!record.used}
-            type="primary"
             icon={!record.used ? <StopOutlined /> : <CheckCircleOutlined />}
+            style={{ marginRight: 10 }}
+            className={
+              record.used ? 'button-color-green' : 'button-color-sunset'
+            }
             onClick={() => handChangeUserState(record)}
           >
             {!record.used ? '停用' : '启用'}
+          </Button>
+          <Button danger icon={<DeleteOutlined />}>
+            删除
           </Button>
         </>
       ),
@@ -76,9 +90,9 @@ function BackUser() {
   }, []);
 
   // 获取用户
-  const getUser = async () => {
+  const getUser = async (params) => {
     try {
-      const { data } = await queryBackUser();
+      const { data } = await queryBackUser(params);
       formatUserData(data);
       setTable(data);
     } catch (error) {
@@ -86,6 +100,7 @@ function BackUser() {
     }
   };
 
+  // 改变用户状态
   const changeUserState = async (id, used) => {
     try {
       const { code, message } = await stopOrStartUser(id, used);
@@ -96,27 +111,47 @@ function BackUser() {
     }
   };
 
+  // 编辑用户
+  const updateUserInfo = async (params) => {
+    try {
+      const { code, message } = await updateUser(params);
+      messageTip(code, message);
+      getUser();
+      code === 200 && setVisible(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handChangeUserState = (record) => {
     const { id, used } = record;
     changeUserState(id, used ? 0 : 1);
   };
 
+  // 编辑用户
   const handChangeUser = (record) => {
     setVisible(true);
+    setDetail(record);
   };
 
   const handClose = () => {
     setVisible(false);
   };
 
-  const handSave = () => {
+  const handSave = (value) => {
+    updateUserInfo(value);
     setVisible(false);
+  };
+
+  const handSearch = (value) => {
+    console.log(value);
+    getUser(value);
   };
 
   return (
     <div className="back-user">
       <div className="container">
-        <SearchForm key="search-form" />
+        <SearchForm key="search-form" search={handSearch} />
         <Table
           key="user-table"
           columns={columns}
@@ -124,7 +159,12 @@ function BackUser() {
           rowKey={(record) => record.id}
           size="middle"
         />
-        <EditForm visible={visible} onClose={handClose} onSave={handSave} />
+        <EditForm
+          detail={detail}
+          visible={visible}
+          onClose={() => handClose()}
+          onSave={handSave}
+        />
       </div>
     </div>
   );
