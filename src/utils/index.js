@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { message } from 'antd';
 
-export function formatDays(time, type = 'YYYY-MM-DD HH:mm:ss') {
+export function formatDays(time, type = 'YYYY-MM-DD') {
   return dayjs(time).format(type);
 }
 
