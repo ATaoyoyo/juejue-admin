@@ -12,7 +12,7 @@ import EditForm from './components/EditForm';
 import { formatUserData } from './helper';
 
 import { queryBackUser, stopOrStartUser, updateUser } from '../../../api/user';
-import { messageTip } from '../../../utils';
+import { formatDays, messageTip } from '../../../utils';
 
 import './style.less';
 
@@ -144,14 +144,13 @@ function BackUser() {
   };
 
   const handSearch = (value) => {
-    console.log(value);
     getUser(value);
   };
 
   return (
     <div className="back-user">
       <div className="container">
-        <SearchForm key="search-form" search={handSearch} />
+        <SearchForm key="search-form" search={handSearch} reset={getUser} />
         <Table
           key="user-table"
           columns={columns}

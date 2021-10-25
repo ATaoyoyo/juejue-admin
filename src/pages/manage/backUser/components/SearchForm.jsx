@@ -4,8 +4,14 @@ import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
 
 import './style.less';
 
-function SearchForm({ search }) {
+function SearchForm({ search, reset }) {
   const [form] = Form.useForm();
+
+  const onReset = () => {
+    form.resetFields();
+    reset();
+  };
+
   return (
     <div className="search-form">
       <Form
@@ -22,15 +28,16 @@ function SearchForm({ search }) {
             </Form.Item>
           </Col>
 
-          <Col span={4}>
+          {/* <Col span={4}>
             <Form.Item label="创建时间" name="create_time">
               <DatePicker
                 placeholder="请选择创建时间"
                 allowClear
+                format='YYYY-MM-DD'
                 style={{ width: '100%' }}
               />
             </Form.Item>
-          </Col>
+          </Col> */}
 
           <Col span={4}>
             <Form.Item label="状态" name="used">
@@ -63,7 +70,7 @@ function SearchForm({ search }) {
             <Button
               type="primary"
               ghost
-              onClick={() => form.resetFields()}
+              onClick={onReset}
               icon={<RedoOutlined />}
             >
               重置
