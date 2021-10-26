@@ -20,6 +20,7 @@ function BackUser() {
   const [table, setTable] = useState([]);
   const [visible, setVisible] = useState(false);
   const [detail, setDetail] = useState({});
+  const [total, setTotal] = useState(0);
 
   const columns = [
     {
@@ -93,8 +94,10 @@ function BackUser() {
   const getUser = async (params) => {
     try {
       const { data } = await queryBackUser(params);
-      formatUserData(data);
-      setTable(data);
+      const { result, total } = data;
+      formatUserData(result);
+      setTable(result);
+      setTotal(total);
     } catch (error) {
       console.log(error);
     }
@@ -157,6 +160,7 @@ function BackUser() {
           dataSource={table}
           rowKey={(record) => record.id}
           size="middle"
+          pagination={{ position: ['bottomCenter'], size: 'default' }}
         />
         <EditForm
           detail={detail}
