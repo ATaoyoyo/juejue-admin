@@ -28,16 +28,11 @@ function SearchForm({ search, reset }) {
             </Form.Item>
           </Col>
 
-          {/* <Col span={4}>
-            <Form.Item label="创建时间" name="create_time">
-              <DatePicker
-                placeholder="请选择创建时间"
-                allowClear
-                format='YYYY-MM-DD'
-                style={{ width: '100%' }}
-              />
+          <Col span={4}>
+            <Form.Item label="用户名" name="nickname">
+              <Input placeholder="请输入用户名" allowClear />
             </Form.Item>
-          </Col> */}
+          </Col>
 
           <Col span={4}>
             <Form.Item label="状态" name="used">
